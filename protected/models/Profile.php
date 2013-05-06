@@ -6,8 +6,6 @@
  * The followings are the available columns in table 'user':
  * @property integer $id
  * @property string $username
- * @property string $password
- * @property string $roles
  * @property string $firstname
  * @property string $lastname
  */

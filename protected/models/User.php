@@ -46,7 +46,7 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, roles', 'required', 'on' => 'insert,update'),
+			array('username, roles', 'required'),
 			array('password', 'required', 'on' => 'insert'),
 			array('roles', 'length', 'max' => 10),
 			array('username', 'length', 'max' => 20, 'min' => 3),
@@ -54,7 +54,7 @@ class User extends CActiveRecord
 			array('firstname, lastname', 'length', 'max' => 100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, username, password, roles, firstname, lastname', 'safe', 'on' => 'search'),
+			array('id, username, roles, firstname, lastname', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -97,7 +97,6 @@ class User extends CActiveRecord
 
 		$criteria->compare('id', $this->id);
 		$criteria->compare('username', $this->username, true);
-		$criteria->compare('password', $this->password, true);
 		$criteria->compare('roles', $this->roles, true);
 		$criteria->compare('firstname', $this->firstname, true);
 		$criteria->compare('lastname', $this->lastname, true);

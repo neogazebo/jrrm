@@ -7,7 +7,7 @@
 Yii::setPathOfAlias('bootstrap', dirname(__FILE__) . '/../extensions/bootstrap');
 return CMap::mergeArray(require(dirname(__FILE__) . '/common.php'), array(
 			'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-			'name' => 'DHL',
+			'name' => 'Informasi Jaminan Divisi RRM',
 			// preloading 'log' component
 			'preload' => array('log'),
 			// autoloading model and component classes

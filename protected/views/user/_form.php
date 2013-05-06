@@ -7,11 +7,15 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'username',array('class'=>'span5','maxlength'=>20)); ?>
+	<?php echo $form->textFieldRow($model,'username',array('class'=>'span5','maxlength'=>20,'autocomplete'=>'off')); ?>
 
-	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span5','maxlength'=>20)); ?>
+	<?php if($model->getScenario() == 'insert'): ?>
+	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span5','maxlength'=>20,'autocomplete'=>'off')); ?>
 
-	<?php echo $form->textFieldRow($model,'roles',array('class'=>'span5','maxlength'=>45)); ?>
+	<?php elseif($model->getScenario() == 'update'): ?>
+	<?php echo $form->passwordFieldRow($model,'newPassword',array('class'=>'span5','autocomplete'=>'off','maxlength'=>20));	 endif; ?>
+	
+	<?php echo $form->dropDownListRow($model,'roles',  User::userRolesList()); ?>
 
 	<?php echo $form->textFieldRow($model,'firstname',array('class'=>'span5','maxlength'=>100)); ?>
 

@@ -16,7 +16,7 @@ class User extends CActiveRecord
 	const ROLE_ROOT = 'root';
 	const ROLE_SUPERVISOR = 'supervisor';
 	const ROLE_DATAENTRY = 'data-entry';
-	const ROLE_VIEWE = 'viewer';
+	const ROLE_VIEWER = 'viewer';
 	
 	public $newPassword;
 
@@ -132,5 +132,10 @@ class User extends CActiveRecord
 			}
 		}
 		return parent::beforeSave();
+	}
+	
+	public static function userRolesList()
+	{
+		return array(self::ROLE_VIEWER => 'Viewer',  self::ROLE_DATAENTRY => 'Data Entry', self::ROLE_SUPERVISOR => 'Supervisor');
 	}
 }

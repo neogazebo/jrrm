@@ -13,6 +13,8 @@
 
 	<?php echo $form->textFieldRow($model,'lastname',array('class'=>'span5','maxlength'=>100)); ?>
 	
+	<p class="text-info">Leave it blank if you don't want to change your password</p>
+	
 	<?php echo $form->passwordFieldRow($model,'newPassword',array('class'=>'span5','maxlength'=>100)); ?>
 	
 	<?php echo $form->passwordFieldRow($model,'confirmPassword',array('class'=>'span5','maxlength'=>100)); ?>

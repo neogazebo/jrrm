@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'My Profile'=>array('index'),
+	'My Profile'
 );
 
 $this->menu=array(

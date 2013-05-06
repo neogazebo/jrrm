@@ -1,18 +1,14 @@
 <?php
 $this->breadcrumbs=array(
-	'Profiles'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
+	'My Profile'=>array('index'),
 	'Update',
 );
 
 $this->menu=array(
-	array('label'=>'List Profile','url'=>array('index')),
-	array('label'=>'Create Profile','url'=>array('create')),
-	array('label'=>'View Profile','url'=>array('view','id'=>$model->id)),
-	array('label'=>'Manage Profile','url'=>array('admin')),
+	array('label'=>'View Profile','url'=>array('index')),
 );
 ?>
 
-<h1>Update Profile <?php echo $model->id; ?></h1>
+<h1>Update My Profile</h1>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

@@ -25,7 +25,7 @@
 					'items' => array(
 						array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
 						array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
-						array('label' => 'User Management', 'url' => array('/user/'), 'visible' => !Yii::app()->user->isGuest),
+						array('label' => 'User Management', 'url' => array('/user/'), 'visible' => Yii::app()->user->checkAccess('root')),
 					),
 				),
 				array(

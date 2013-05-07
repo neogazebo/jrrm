@@ -61,7 +61,7 @@ class ProfileController extends Controller
 		{
 			$model->attributes=$_POST['Profile'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('update',array(

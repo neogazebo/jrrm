@@ -26,8 +26,8 @@ $this->menu=array(
 		),
 		array(
 			'name' => 'roles',
-			'value' => '$data->roles',
-			'filter' => array(User::ROLE_VIEWER => 'Viewer',User::ROLE_DATAENTRY => 'Data Entry',User::ROLE_SUPERVISOR => 'Supervisor')
+			'value' => 'ucfirst(str_replace("-"," ",$data->roles))',
+			'filter' => array(User::ROLE_VIEWER => 'Viewer',User::ROLE_DATAENTRY => 'Data entry',User::ROLE_SUPERVISOR => 'Supervisor')
 		),
 		'firstname',
 		'lastname',

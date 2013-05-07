@@ -113,8 +113,7 @@ class User extends CActiveRecord
 	 */
 	public function validatePassword($password)
 	{
-//		return Yii::app()->hasher->checkPassword($password, $this->password);
-		return TRUE;
+		return Yii::app()->hasher->checkPassword($password, $this->password);
 	}
 
 	public function beforeSave()

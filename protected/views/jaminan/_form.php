@@ -10,14 +10,28 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 <?php echo $form->errorSummary($model); ?>
 
-<?php echo $form->textFieldRow($model, 'jenis_jaminan_id', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 45)); ?>
+
+<?php $posts = RangeHarga::model()->findAll() ?>
+<?php echo $form->dropdownListRow($model, 'range_harga_id', CHtml::listData($posts, 'id', 'value') ,array('class' => 'span5','prompt' => 'Pilih Range Harga'));?>
+
+<?php echo $form->dropdownListRow($model, 'jenis_jaminan_id', CHtml::listData(JenisJaminan::model()->findAll(), 'id', 'name') ,array('class' => 'span5','prompt' => 'Pilih Jenis Jaminan')); ?>
+
+<?php echo $form->textAreaRow($model, 'alamat', array('rows' => 6, 'cols' => 30, 'class' => 'span5')); ?>
+
+<?php echo $form->textFieldRow($model, 'kelurahan', array('class' => 'span5', 'maxlength' => 45)); ?>
+
+<?php echo $form->textFieldRow($model, 'kecamatan', array('class' => 'span5', 'maxlength' => 45)); ?>
+
+<?php echo $form->textFieldRow($model, 'kota', array('class' => 'span5', 'maxlength' => 45)); ?>
 
 <?php echo $form->labelEx($model,'propinsi_id') ?>
 <?php
 $this->widget('ext.select2.ESelect2', array(
 	'model' => $model,
 	'htmlOptions' => array(
-		'style' => 'clear: both;display: block;width:365px'
+		'style' => 'clear: both;display: block;',
+		'class' => 'span5 select2',
 	),
 	'attribute' => 'propinsi_id',
 	'data' => CHtml::listData(Propinsi::model()->findAll(), 'id','name'),
@@ -26,14 +40,12 @@ $this->widget('ext.select2.ESelect2', array(
 	),
 ))
 ?>
-<div style="clear: both;display: block"></div>
-<?php echo $form->textFieldRow($model, 'alamat', array('class' => 'span5', 'maxlength' => 200)); ?>
 
 <?php echo $form->textFieldRow($model, 'latitude', array('class' => 'span5', 'maxlength' => 45)); ?>
 
-	<?php echo $form->textFieldRow($model, 'longitude', array('class' => 'span5', 'maxlength' => 45)); ?>
+<?php echo $form->textFieldRow($model, 'longitude', array('class' => 'span5', 'maxlength' => 45)); ?>
 
-	<?php echo $form->textAreaRow($model, 'info', array('rows' => 6, 'cols' => 50, 'class' => 'span8')); ?>
+<?php echo $form->textAreaRow($model, 'info', array('rows' => 6, 'cols' => 50, 'class' => 'span8')); ?>
 
 <div class="form-actions">
 <?php

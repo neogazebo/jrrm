@@ -6,3 +6,9 @@
 	color: #ffc0cb;
 	font-size: 96%;
 }
+
+.span5.select2{
+	float: none;
+	margin-left: 0px !important;
+	margin-bottom: 10px !important;
+}

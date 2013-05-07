@@ -5,27 +5,39 @@
  *
  * The followings are the available columns in table 'jaminan':
  * @property integer $id
+ * @property string $slug
  * @property integer $jenis_jaminan_id
  * @property integer $propinsi_id
+ * @property string $kecamatan
+ * @property string $kelurahan
+ * @property string $kota
  * @property string $alamat
  * @property string $latitude
  * @property string $longitude
  * @property string $info
+ * @property integer $isApproved
+ * @property string $status
+ * @property integer $range_harga_id
  *
  * The followings are the available model relations:
  * @property Foto[] $fotos
  * @property JenisJaminan $jenisJaminan
  * @property Propinsi $propinsi
+ * @property RangeHarga $rangeHarga
  * @property SuratKepemilikan[] $suratKepemilikans
  */
 class Jaminan extends CActiveRecord
 {
+	public $sJenisJaminan;
+	public $sPropinsi;
+	public $sRangeHarga;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Jaminan the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -46,14 +58,14 @@ class Jaminan extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('jenis_jaminan_id, propinsi_id, alamat', 'required'),
-			array('jenis_jaminan_id, propinsi_id', 'numerical', 'integerOnly'=>true),
-			array('alamat', 'length', 'max'=>200),
-			array('latitude, longitude', 'length', 'max'=>45),
-			array('info', 'safe'),
+			array('jenis_jaminan_id, propinsi_id, range_harga_id', 'required'),
+			array('jenis_jaminan_id, propinsi_id, isApproved, range_harga_id', 'numerical', 'integerOnly' => true),
+			array('slug, kecamatan, kelurahan, kota, latitude, longitude', 'length', 'max' => 45),
+			array('status', 'length', 'max' => 6),
+			array('alamat, info', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, jenis_jaminan_id, propinsi_id, alamat, latitude, longitude, info', 'safe', 'on'=>'search'),
+			array('id, slug, jenis_jaminan_id, propinsi_id, kecamatan, kelurahan, kota, alamat, latitude, longitude, info, isApproved, status, range_harga_id,sJenisJaminan,sPropinsi,sRangeHarga', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -68,6 +80,7 @@ class Jaminan extends CActiveRecord
 			'fotos' => array(self::HAS_MANY, 'Foto', 'jaminan_id'),
 			'jenisJaminan' => array(self::BELONGS_TO, 'JenisJaminan', 'jenis_jaminan_id'),
 			'propinsi' => array(self::BELONGS_TO, 'Propinsi', 'propinsi_id'),
+			'rangeHarga' => array(self::BELONGS_TO, 'RangeHarga', 'range_harga_id'),
 			'suratKepemilikans' => array(self::HAS_MANY, 'SuratKepemilikan', 'jaminan_id'),
 		);
 	}
@@ -79,12 +92,20 @@ class Jaminan extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'slug' => 'Slug',
 			'jenis_jaminan_id' => 'Jenis Jaminan',
 			'propinsi_id' => 'Propinsi',
+			'kecamatan' => 'Kecamatan',
+			'kelurahan' => 'Kelurahan',
+			'kota' => 'Kota',
 			'alamat' => 'Alamat',
 			'latitude' => 'Latitude',
 			'longitude' => 'Longitude',
 			'info' => 'Info',
+			'isApproved' => 'Status Approval',
+			'status' => 'Status',
+			'range_harga_id' => 'Range Harga',
+			'sJenisJaminan' => 'Jenis Jaminan'
 		);
 	}
 
@@ -97,18 +118,42 @@ class Jaminan extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
+		$criteria->with = array('jenisJaminan', 'propinsi');
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('jenis_jaminan_id',$this->jenis_jaminan_id);
-		$criteria->compare('propinsi_id',$this->propinsi_id);
-		$criteria->compare('alamat',$this->alamat,true);
-		$criteria->compare('latitude',$this->latitude,true);
-		$criteria->compare('longitude',$this->longitude,true);
-		$criteria->compare('info',$this->info,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('slug', $this->slug, true);
+		$criteria->compare('jenis_jaminan_id', $this->jenis_jaminan_id);
+		$criteria->compare('propinsi_id', $this->propinsi_id);
+		$criteria->compare('kecamatan', $this->kecamatan, true);
+		$criteria->compare('kelurahan', $this->kelurahan, true);
+		$criteria->compare('kota', $this->kota, true);
+		$criteria->compare('alamat', $this->alamat, true);
+		$criteria->compare('latitude', $this->latitude, true);
+		$criteria->compare('longitude', $this->longitude, true);
+		$criteria->compare('info', $this->info, true);
+		$criteria->compare('isApproved', $this->isApproved);
+		$criteria->compare('status', $this->status, true);
+		$criteria->compare('range_harga_id', $this->range_harga_id);
+		$criteria->compare('jenisJaminan.name', $this->sJenisJaminan,true);
+		$criteria->compare('propinsi.name', $this->sPropinsi,true);
+
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
+			'sort' => array(
+				'attributes' => array(
+					'sJenisJaminan' => array(
+						'asc' => 'jenisJaminan.name',
+						'desc' => 'jenisJaminan.name DESC',
+					),
+					'sPropinsi' => array(
+						'asc' => 'propinsi.name',
+						'desc' => 'propinsi.name DESC',
+					),
+					'*',
+				),
+			),
 		));
 	}
 }

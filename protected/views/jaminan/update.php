@@ -1,18 +1,24 @@
 <?php
 $this->breadcrumbs=array(
-	'Jaminans'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
+	'Jaminan'=>array('index'),
+	'#'.$model->id=>array('view','id'=>$model->id),
 	'Update',
 );
 
 $this->menu=array(
 	array('label'=>'List Jaminan','url'=>array('index')),
-	array('label'=>'Create Jaminan','url'=>array('create')),
-	array('label'=>'View Jaminan','url'=>array('view','id'=>$model->id)),
-	array('label'=>'Manage Jaminan','url'=>array('admin')),
+	array('label'=>'Lihat Jaminan','url'=>array('view','id'=>$model->id)),
+	array('label'=>'Input Jaminan','url'=>array('create')),
+	array('label'=>'Manajemen Jaminan','url'=>array('admin')),
 );
+
+$this->widget('bootstrap.widgets.TbAlert', array(
+	'alerts' => array(
+		'success' => array('block' => true, 'fade' => true),
+	),
+));
 ?>
 
-<h1>Update Jaminan <?php echo $model->id; ?></h1>
+<h1>Jaminan #<?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

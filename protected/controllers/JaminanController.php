@@ -70,7 +70,10 @@ class JaminanController extends Controller
 		{
 			$model->attributes=$_POST['Jaminan'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+				Yii::app()->user->setFlash('success', 'Jaminan Baru Telah di input');
+				$this->redirect(array('update','id'=>$model->id));
+			}
 		}
 
 		$this->render('create',array(

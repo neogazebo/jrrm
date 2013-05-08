@@ -98,7 +98,7 @@ class Jaminan extends CActiveRecord
 			'latitude' => 'Latitude',
 			'longitude' => 'Longitude',
 			'info' => 'Info',
-			'isApproved' => 'Status Approval',
+			'isApproved' => 'Publish',
 			'status' => 'Status',
 			'harga' => 'Harga',
 			'sJenisJaminan' => 'Jenis Jaminan'

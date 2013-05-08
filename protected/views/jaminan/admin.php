@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-	'Jaminans'=>array('index'),
-	'Manage',
+	'Jaminan'=>array('index'),
+	'Manajemen',
 );
 
 $this->menu=array(
@@ -20,6 +20,11 @@ $this->menu=array(
 	'filter'=>$model,
 	'columns'=>array(
 		array(
+			'name' => 'id',
+			'value' => '"#".$data->id',
+			'htmlOptions' => array('style' => 'width: 50px'),
+		),
+		array(
 			'name' => 'sJenisJaminan',
 			'value' => '$data->jenisJaminan->name'
 		),
@@ -29,9 +34,9 @@ $this->menu=array(
 		),
 		array(
 			'name' => 'isApproved',
-			'filter' => array(0=>'Not Approve',1=>'Approved'),
+			'filter' => array(0=>'Draft',1=>'Published'),
 			'value' => function($data,$row){
-				return ($data->isApproved) ? 'Approved' : 'Not Approve';
+				return ($data->isApproved) ? 'Published' : 'Draft';
 			}
 		),
 		array(

@@ -17,7 +17,7 @@
  * @property string $info
  * @property integer $isApproved
  * @property string $status
- * @property integer $range_harga_id
+ * @property integer $harga
  *
  * The followings are the available model relations:
  * @property Foto[] $fotos
@@ -30,7 +30,6 @@ class Jaminan extends CActiveRecord
 {
 	public $sJenisJaminan;
 	public $sPropinsi;
-	public $sRangeHarga;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -58,8 +57,8 @@ class Jaminan extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('jenis_jaminan_id, propinsi_id, range_harga_id', 'required'),
-			array('jenis_jaminan_id, propinsi_id, isApproved, range_harga_id', 'numerical', 'integerOnly' => true),
+			array('jenis_jaminan_id, propinsi_id', 'required'),
+			array('harga,jenis_jaminan_id, propinsi_id, isApproved, range_harga_id', 'numerical', 'integerOnly' => true),
 			array('slug, kecamatan, kelurahan, kota, latitude, longitude', 'length', 'max' => 45),
 			array('status', 'length', 'max' => 6),
 			array('alamat, info', 'safe'),
@@ -80,7 +79,6 @@ class Jaminan extends CActiveRecord
 			'fotos' => array(self::HAS_MANY, 'Foto', 'jaminan_id'),
 			'jenisJaminan' => array(self::BELONGS_TO, 'JenisJaminan', 'jenis_jaminan_id'),
 			'propinsi' => array(self::BELONGS_TO, 'Propinsi', 'propinsi_id'),
-			'rangeHarga' => array(self::BELONGS_TO, 'RangeHarga', 'range_harga_id'),
 			'suratKepemilikans' => array(self::HAS_MANY, 'SuratKepemilikan', 'jaminan_id'),
 		);
 	}
@@ -104,7 +102,7 @@ class Jaminan extends CActiveRecord
 			'info' => 'Info',
 			'isApproved' => 'Status Approval',
 			'status' => 'Status',
-			'range_harga_id' => 'Range Harga',
+			'harga' => 'Harga',
 			'sJenisJaminan' => 'Jenis Jaminan'
 		);
 	}
@@ -134,7 +132,6 @@ class Jaminan extends CActiveRecord
 		$criteria->compare('info', $this->info, true);
 		$criteria->compare('isApproved', $this->isApproved);
 		$criteria->compare('status', $this->status, true);
-		$criteria->compare('range_harga_id', $this->range_harga_id);
 		$criteria->compare('jenisJaminan.name', $this->sJenisJaminan,true);
 		$criteria->compare('propinsi.name', $this->sPropinsi,true);
 

@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'jaminan':
  * @property integer $id
- * @property string $slug
  * @property integer $jenis_jaminan_id
  * @property integer $propinsi_id
  * @property string $kecamatan
@@ -58,13 +57,13 @@ class Jaminan extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('jenis_jaminan_id, propinsi_id', 'required'),
-			array('harga,jenis_jaminan_id, propinsi_id, isApproved, range_harga_id', 'numerical', 'integerOnly' => true),
-			array('slug, kecamatan, kelurahan, kota, latitude, longitude', 'length', 'max' => 45),
+			array('harga,jenis_jaminan_id, propinsi_id, isApproved', 'numerical', 'integerOnly' => true),
+			array('kecamatan, kelurahan, kota, latitude, longitude', 'length', 'max' => 45),
 			array('status', 'length', 'max' => 6),
 			array('alamat, info', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, slug, jenis_jaminan_id, propinsi_id, kecamatan, kelurahan, kota, alamat, latitude, longitude, info, isApproved, status, range_harga_id,sJenisJaminan,sPropinsi,sRangeHarga', 'safe', 'on' => 'search'),
+			array('id, jenis_jaminan_id, propinsi_id, kecamatan, kelurahan, kota, alamat, latitude, longitude, info, isApproved, status,sJenisJaminan,sPropinsi,sRangeHarga', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -90,7 +89,6 @@ class Jaminan extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'slug' => 'Slug',
 			'jenis_jaminan_id' => 'Jenis Jaminan',
 			'propinsi_id' => 'Propinsi',
 			'kecamatan' => 'Kecamatan',
@@ -120,7 +118,6 @@ class Jaminan extends CActiveRecord
 		$criteria->with = array('jenisJaminan', 'propinsi');
 
 		$criteria->compare('id', $this->id);
-		$criteria->compare('slug', $this->slug, true);
 		$criteria->compare('jenis_jaminan_id', $this->jenis_jaminan_id);
 		$criteria->compare('propinsi_id', $this->propinsi_id);
 		$criteria->compare('kecamatan', $this->kecamatan, true);

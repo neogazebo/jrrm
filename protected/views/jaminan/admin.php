@@ -19,7 +19,6 @@ $this->menu=array(
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'slug',
 		array(
 			'name' => 'sJenisJaminan',
 			'value' => '$data->jenisJaminan->name'
@@ -34,11 +33,6 @@ $this->menu=array(
 			'value' => function($data,$row){
 				return ($data->isApproved) ? 'Approved' : 'Not Approve';
 			}
-		),
-		array(
-			'name' => 'range_harga_id',
-			'filter' => CHtml::listData(RangeHarga::model()->findAll(), 'id', 'value'),
-			'value' => '$data->rangeHarga->value'
 		),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',

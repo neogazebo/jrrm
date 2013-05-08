@@ -10,6 +10,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Jaminan</h1>
+<h1>Input Jaminan</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

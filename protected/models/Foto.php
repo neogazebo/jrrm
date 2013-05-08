@@ -8,6 +8,7 @@
  * @property integer $jaminan_id
  * @property string $source
  * @property string $type
+ * @property integer $isThumbnail
  *
  * The followings are the available model relations:
  * @property Jaminan $jaminan
@@ -41,12 +42,12 @@ class Foto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('jaminan_id, source, type', 'required'),
-			array('jaminan_id', 'numerical', 'integerOnly'=>true),
+			array('jaminan_id, isThumbnail', 'numerical', 'integerOnly'=>true),
 			array('source', 'length', 'max'=>45),
 			array('type', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, jaminan_id, source, type', 'safe', 'on'=>'search'),
+			array('id, jaminan_id, source, type, isThumbnail', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,6 +73,7 @@ class Foto extends CActiveRecord
 			'jaminan_id' => 'Jaminan',
 			'source' => 'Source',
 			'type' => 'Type',
+			'isThumbnail' => 'Is Thumbnail',
 		);
 	}
 
@@ -90,6 +92,7 @@ class Foto extends CActiveRecord
 		$criteria->compare('jaminan_id',$this->jaminan_id);
 		$criteria->compare('source',$this->source,true);
 		$criteria->compare('type',$this->type,true);
+		$criteria->compare('isThumbnail',$this->isThumbnail);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

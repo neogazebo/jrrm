@@ -11,6 +11,8 @@
 
 	<?php echo $form->textFieldRow($model,'type',array('class'=>'span5','maxlength'=>1)); ?>
 
+	<?php echo $form->textFieldRow($model,'isThumbnail',array('class'=>'span5')); ?>
+
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',

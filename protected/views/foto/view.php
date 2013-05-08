@@ -22,5 +22,6 @@ $this->menu=array(
 		'jaminan_id',
 		'source',
 		'type',
+		'isThumbnail',
 	),
 )); ?>

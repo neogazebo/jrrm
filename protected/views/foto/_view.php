@@ -16,5 +16,9 @@
 	<?php echo CHtml::encode($data->type); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('isThumbnail')); ?>:</b>
+	<?php echo CHtml::encode($data->isThumbnail); ?>
+	<br />
+
 
 </div>

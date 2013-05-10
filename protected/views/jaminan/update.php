@@ -21,4 +21,4 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
 <h1>Jaminan #<?php echo $model->id; ?></h1>
 
-<?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form',array('model'=>$model,'surats' => $surats)); ?>

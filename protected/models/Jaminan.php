@@ -75,10 +75,10 @@ class Jaminan extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'fotos' => array(self::HAS_MANY, 'Foto', 'jaminan_id'),
+			'foto' => array(self::HAS_MANY, 'Foto', 'jaminan_id'),
 			'jenisJaminan' => array(self::BELONGS_TO, 'JenisJaminan', 'jenis_jaminan_id'),
 			'propinsi' => array(self::BELONGS_TO, 'Propinsi', 'propinsi_id'),
-			'suratKepemilikans' => array(self::HAS_MANY, 'SuratKepemilikan', 'jaminan_id'),
+			'suratKepemilikan' => array(self::HAS_MANY, 'SuratKepemilikan', 'jaminan_id'),
 		);
 	}
 

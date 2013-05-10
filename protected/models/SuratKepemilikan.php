@@ -39,7 +39,7 @@ class SuratKepemilikan extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, jaminan_id', 'required'),
+			array('name', 'required'),
 			array('jaminan_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>45),
 			// The following rule is used by search().

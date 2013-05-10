@@ -16,6 +16,9 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/common.php'), array(
 				'application.components.*',
 				'application.extensions.phpass.*',
 			),
+			'aliases' => array(
+				'xupload' => 'ext.xupload'
+			),
 			'theme' => 'bootstrap',
 			'modules' => array(
 				// uncomment the following to enable the Gii tool

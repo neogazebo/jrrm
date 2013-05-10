@@ -12,4 +12,4 @@ $this->menu=array(
 
 <h1>Input Jaminan</h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'surats'=>$surats)); ?>

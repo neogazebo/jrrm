@@ -10,6 +10,7 @@ $this->menu=array(
 	array('label'=>'Lihat Jaminan','url'=>array('view','id'=>$model->id)),
 	array('label'=>'Input Jaminan','url'=>array('create')),
 	array('label'=>'Manajemen Jaminan','url'=>array('admin')),
+	array('label'=>'Photo','url'=>array('foto/create','jaminan_id'=>$model->id))
 );
 
 $this->widget('bootstrap.widgets.TbAlert', array(

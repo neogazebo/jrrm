@@ -15,6 +15,10 @@
  */
 class Foto extends CActiveRecord
 {
+	const TYPE_DEPAN = 'D';
+	const TYPE_DALAM = 'I';
+	const TYPE_LAINNYA = 'L';
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -41,9 +45,9 @@ class Foto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('jaminan_id, source, type', 'required'),
+			array('jaminan_id, type', 'required'),
 			array('jaminan_id, isThumbnail', 'numerical', 'integerOnly'=>true),
-			array('source', 'length', 'max'=>45),
+			array('source', 'length', 'max'=>100),
 			array('type', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

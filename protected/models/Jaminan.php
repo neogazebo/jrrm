@@ -150,4 +150,30 @@ class Jaminan extends CActiveRecord
 			),
 		));
 	}
+	
+	protected function afterSave()
+	{
+		if($this->isNewRecord)
+		{
+			for($i = 1 ; $i <= 9 ; $i++)
+			{
+				$foto = new Foto;
+				$foto->jaminan_id = $this->id;
+				switch ($i)
+				{
+					case ($i == 1 || $i == 2 || $i ==3):
+						$foto->type = Foto::TYPE_DEPAN;
+						break;
+					case ($i == 4 || $i == 5 || $i ==6):
+						$foto->type = Foto::TYPE_DALAM;
+						break;
+					case ($i == 7 || $i == 8 || $i ==9):
+						$foto->type = Foto::TYPE_LAINNYA;
+						break;
+				}
+				$foto->save(FALSE );
+			}
+		}
+		return parent::afterSave();
+	}
 }

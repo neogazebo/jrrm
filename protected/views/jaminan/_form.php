@@ -95,6 +95,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 <?php
 $url = Yii::app()->createUrl('jaminan/deleteSurat');
+$model_id = ($model->id) ? $model->id : 0;
 Yii::app()->clientScript->registerScript('delete_field_surat', "
 $('body').delegate('.del_field_surat','click',function(){
 	var that = $(this);
@@ -104,7 +105,7 @@ $('body').delegate('.del_field_surat','click',function(){
 	if(objSurat)
 	{
 		$.ajax('$url',{
-			'data':{id:objSurat,jaminanId:$model->id},
+			'data':{id:objSurat,jaminanId:$model_id},
 			'success':function(){
 				if(counter)
 				{		

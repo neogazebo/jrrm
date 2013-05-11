@@ -6,7 +6,7 @@ class FotoController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout = '//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -26,20 +26,31 @@ class FotoController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
+			array('allow', // allow all users to perform 'index' and 'view' actions
+				'actions' => array('index', 'view'),
+				'users' => array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
+				'actions' => array('create', 'update','upload'),
+				'users' => array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'actions' => array('admin', 'delete'),
+				'users' => array('admin'),
 			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
+			array('deny', // deny all users
+				'users' => array('*'),
+			),
+		);
+	}
+
+	public function actions()
+	{
+		return array(
+			'upload' => array(
+				'class' => 'xupload.actions.XUploadAction',
+				'path' => Yii::app()->getBasePath() . "/../uploads",
+				'publicPath' => Yii::app()->getBaseUrl() . "/uploads",
 			),
 		);
 	}
@@ -50,31 +61,50 @@ class FotoController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+		$this->render('view', array(
+			'model' => $this->loadModel($id),
 		));
 	}
 
 	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Upload foto
 	 */
-	public function actionCreate()
+	public function actionUpload($jaminan_id,$id)
 	{
-		$model=new Foto;
+		$model = $this->loadModel($id);
+		Yii::import( "xupload.models.XUploadForm" );
+    $photos = new XUploadForm;
+
+		$jaminan = Jaminan::model()->findByPk($jaminan_id);
+		if (!($jaminan instanceof Jaminan))
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Foto']))
+		$model->jaminan_id = $jaminan_id;
+		if (isset($_POST['Foto']))
 		{
-			$model->attributes=$_POST['Foto'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $_POST['Foto'];
+			$transaction = Yii::app()->db->beginTransaction();
+			try
+			{
+				//Save the model to the database
+				if ($model->save())
+				{
+					$transaction->commit();
+				}
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollback();
+				Yii::app()->handleException($e);
+			}
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
+		$this->render('form', array(
+			'model' => $model,
+			'photos' => $photos
 		));
 	}
 
@@ -85,20 +115,20 @@ class FotoController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Foto']))
+		if (isset($_POST['Foto']))
 		{
-			$model->attributes=$_POST['Foto'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $_POST['Foto'];
+			if ($model->save())
+				$this->redirect(array('view', 'id' => $model->id));
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
+		$this->render('update', array(
+			'model' => $model,
 		));
 	}
 
@@ -109,42 +139,39 @@ class FotoController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		if(Yii::app()->request->isPostRequest)
+		if (Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
+			if (!isset($_GET['ajax']))
 				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
 	}
 
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionIndex($jaminan_id)
 	{
-		$dataProvider=new CActiveDataProvider('Foto');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
+		$objJaminan = Jaminan::model()->findByPk($jaminan_id);
+		if (!($objJaminan instanceof Jaminan))
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+		
+		$model = new Foto('search');
+		$model->unsetAttributes(); // clear any default values
+		
+		$model->jaminan_id = $jaminan_id;
+		
+		if (isset($_GET['Foto']))
+			$model->attributes = $_GET['Foto'];
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Foto('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Foto']))
-			$model->attributes=$_GET['Foto'];
-
-		$this->render('admin',array(
-			'model'=>$model,
+		$this->render('admin', array(
+			'model' => $model,
+			'jaminan_id' => $jaminan_id
 		));
 	}
 
@@ -155,9 +182,9 @@ class FotoController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Foto::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		$model = Foto::model()->findByPk($id);
+		if ($model === null)
+			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
 	}
 
@@ -167,7 +194,7 @@ class FotoController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='foto-form')
+		if (isset($_POST['ajax']) && $_POST['ajax'] === 'foto-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

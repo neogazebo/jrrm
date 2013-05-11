@@ -53,6 +53,7 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/common.php'), array(
 				  'urlFormat'=>'path',
 				  'rules'=>array(
 					'foto/jaminan/<jaminan_id:\d+>'=>'foto/index',
+					'foto/jaminan/<jaminan_id:\d+>/upload/<id:\d+>'=>'foto/upload',
 				  '<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				  '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				  '<controller:\w+>/<action:\w+>'=>'<controller>/<action>'

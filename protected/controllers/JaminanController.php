@@ -71,7 +71,7 @@ class JaminanController extends Controller
 				$POSTSurats = $_POST['SuratKepemilikan'];
 				foreach ($POSTSurats as $surat)
 				{
-					$objSurat = (empty($surat['id'])) ? new SuratKepemilikan : SuratKepemilikan::model()->findByPk($surat['id']);
+					$objSurat = new SuratKepemilikan;
 					$objSurat->attributes = $surat;
 					$objSurat->jaminan_id = $model->id;
 					$objSurat->save();
@@ -83,6 +83,7 @@ class JaminanController extends Controller
 
 		$this->render('create', array(
 			'model' => $model,
+			'surats' => $surats
 		));
 	}
 

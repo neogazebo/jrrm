@@ -29,6 +29,9 @@ class Jaminan extends CActiveRecord
 {
 	public $sJenisJaminan;
 	public $sPropinsi;
+	const STAT_JUAL = 'jual';
+	const STAT_LELANG = 'lelang';
+	const STAT_LAKU = 'laku';
 
 	/**
 	 * Returns the static model of the specified AR class.

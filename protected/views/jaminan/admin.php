@@ -21,14 +21,19 @@ $this->menu=array(
 	'columns'=>array(
 		array(
 			'name' => 'id',
-			'value' => '"#".$data->id',
+			'type' => 'raw',
+			'value' => function($data,$row){
+				return CHtml::link('#'.$data->id, Yii::app()->createUrl('jaminan/update',array('id'=>$data->id)), array('rel'=>'tooltip','title'=>'Update'));
+			},
 			'htmlOptions' => array('style' => 'width: 50px'),
 		),
 		array(
-			'name' => 'sJenisJaminan',
+			'filter'=>  CHtml::listData(JenisJaminan::model()->findAll(), 'id', 'name'),
+			'name' => 'jenis_jaminan_id',
 			'value' => '$data->jenisJaminan->name'
 		),
 		array(
+			'filter' => array(Jaminan::STAT_JUAL=>ucfirst(Jaminan::STAT_JUAL),Jaminan::STAT_LELANG=>ucfirst(Jaminan::STAT_LELANG),Jaminan::STAT_LAKU=>ucfirst(Jaminan::STAT_LAKU)),
 			'name' => 'status',
 			'value' => 'ucfirst($data->status)'
 		),
@@ -41,6 +46,7 @@ $this->menu=array(
 		),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template' => '{delete}'
 		),
 	),
 )); ?>

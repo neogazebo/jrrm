@@ -48,16 +48,16 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/common.php'), array(
 					'class' => 'FWebUser',
 				),
 				// uncomment the following to enable URLs in path-format
-				/*
+				
 				  'urlManager'=>array(
 				  'urlFormat'=>'path',
 				  'rules'=>array(
+					'foto/jaminan/<jaminan_id:\d+>'=>'foto/index',
 				  '<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				  '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-				  '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+				  '<controller:\w+>/<action:\w+>'=>'<controller>/<action>'
 				  ),
 				  ),
-				 */
 				'errorHandler' => array(
 					// use 'site/error' action to display errors
 					'errorAction' => 'site/error',

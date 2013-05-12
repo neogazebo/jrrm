@@ -31,7 +31,7 @@ class FotoController extends Controller
 				'users' => array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions' => array('create', 'update','upload'),
+				'actions' => array('create', 'update', 'upload', 'uploadAdditional','setThumbnail'),
 				'users' => array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -69,11 +69,11 @@ class FotoController extends Controller
 	/**
 	 * Upload foto
 	 */
-	public function actionUpload($jaminan_id,$id)
+	public function actionUpload($jaminan_id, $id)
 	{
 		$model = $this->loadModel($id);
-		Yii::import( "xupload.models.XUploadForm" );
-    $photos = new XUploadForm;
+
+		$photos = new XUploadForm;
 
 		$jaminan = Jaminan::model()->findByPk($jaminan_id);
 		if (!($jaminan instanceof Jaminan))
@@ -102,10 +102,93 @@ class FotoController extends Controller
 			}
 		}
 
-		$this->render('form', array(
+		$this->render('upload', array(
 			'model' => $model,
 			'photos' => $photos
 		));
+	}
+
+	public function actionUploadAdditional()
+	{
+		header('Vary: Accept');
+		if (isset($_SERVER['HTTP_ACCEPT']) && (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false))
+		{
+			header('Content-type: application/json');
+		}
+		else
+		{
+			header('Content-type: text/plain');
+		}
+
+		if (isset($_GET["_method"]))
+		{
+			if ($_GET["_method"] == "delete")
+			{
+				$model = Foto::model()->findByPk($_GET['model_id']);
+				$model->source = '';
+				$model->save(FALSE);
+				$success = is_file($_GET["file"]) && $_GET["file"][0] !== '.' && unlink($_GET["file"]);
+				echo json_encode($success);
+			}
+		}
+		else
+		{
+			$upload = new XUploadForm; //Here we instantiate our model
+			//We get the uploaded instance
+			$upload->file = CUploadedFile::getInstance($upload, 'file');
+			if ($upload->file !== null)
+			{
+				$upload->mime_type = $upload->file->getType();
+				$upload->size = $upload->file->getSize();
+				$upload->name = $upload->file->getName();
+				
+				$model_id = Yii::app()->request->getPost('id','');
+				$model = Foto::model()->findByPk($model_id);
+
+				if ($upload->validate() && ($model instanceof Foto))
+				{
+					$path = Yii::app()->getBasePath() . "/../img_jaminan/";
+					$publicPath = Yii::app()->getBaseUrl() . "/img_jaminan/";
+					if (!is_dir($path))
+					{
+						mkdir($path, 0777, true);
+						chmod($path, 0777);
+					}
+					$filename = md5( Yii::app( )->user->id.microtime( ).$upload->name);
+					$filename .= ".".$upload->file->getExtensionName( );
+					$is_uploaded = $upload->file->saveAs($path . $filename);
+					if($is_uploaded){
+						$model->source = $filename;
+						$model->save(false);
+					}
+					chmod($path . $filename, 0777);
+
+					//Now we return our json
+					echo json_encode(array(array(
+							"name" => $upload->name,
+							"type" => $upload->mime_type,
+							"size" => $upload->size,
+							"url" => $publicPath . $filename,
+							"thumbnail_url" => $publicPath . $filename,
+							"delete_url" => $this->createUrl("uploadAdditional", array(
+								"_method" => "delete",
+								"file" => $path . $filename,
+								"model_id"=> $model->id
+							)),
+							"delete_type" => "POST"
+							)));
+				}
+				else
+				{
+					echo json_encode(array(array("error" => $upload->getErrors('file'),)));
+					Yii::log("XUploadAction: " . CVarDumper::dumpAsString($upload->getErrors()), CLogger::LEVEL_ERROR, "xupload.actions.XUploadAction");
+				}
+			}
+			else
+			{
+				throw new CHttpException(500, "Could not upload file");
+			}
+		}
 	}
 
 	/**
@@ -160,12 +243,12 @@ class FotoController extends Controller
 		$objJaminan = Jaminan::model()->findByPk($jaminan_id);
 		if (!($objJaminan instanceof Jaminan))
 			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-		
+
 		$model = new Foto('search');
 		$model->unsetAttributes(); // clear any default values
-		
+
 		$model->jaminan_id = $jaminan_id;
-		
+
 		if (isset($_GET['Foto']))
 			$model->attributes = $_GET['Foto'];
 
@@ -173,6 +256,21 @@ class FotoController extends Controller
 			'model' => $model,
 			'jaminan_id' => $jaminan_id
 		));
+	}
+	
+	public function actionSetThumbnail($id,$jaminan_id)
+	{
+		$fotos = Foto::model()->findAll();
+		foreach ($fotos as $foto)
+		{
+			$foto->isThumbnail = 0;
+			$foto->save(false);
+		}
+		
+		$thumbFoto = Foto::model()->findByPk($id);
+		$thumbFoto->isThumbnail = 1;
+		$thumbFoto->save(false);
+		$this->redirect(array('index','jaminan_id'=>$jaminan_id));
 	}
 
 	/**

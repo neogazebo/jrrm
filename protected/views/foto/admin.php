@@ -32,9 +32,11 @@ $this->menu=array(
 		),
 		array(
 			'name'=>'isThumbnail',
-		),
-		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'htmlOptions' => array('style' => 'text-align:right'),
+			'type'=>'raw',
+			'value'=>  function ($data,$row)use($jaminan_id){
+				return ($data->isThumbnail) ? CHtml::link('Thumbnail', Yii::app()->createUrl('foto/setThumbnail',array('id'=>$data->id,'jaminan_id' => $jaminan_id)), array('class'=>'btn btn-success btn-mini')) : CHtml::link('Set as thumb', Yii::app()->createUrl('foto/setThumbnail',array('id'=>$data->id,'jaminan_id' => $jaminan_id)), array('class'=>'btn btn-info btn-mini')) ;
+			}
 		),
 	),
 )); ?>

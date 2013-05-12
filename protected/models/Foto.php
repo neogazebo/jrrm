@@ -77,7 +77,7 @@ class Foto extends CActiveRecord
 			'jaminan_id' => 'Jaminan',
 			'source' => 'Source',
 			'type' => 'Type',
-			'isThumbnail' => 'Is Thumbnail',
+			'isThumbnail' => 'Thumbnail',
 		);
 	}
 
@@ -85,7 +85,7 @@ class Foto extends CActiveRecord
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($type)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
@@ -95,7 +95,7 @@ class Foto extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('jaminan_id',$this->jaminan_id);
 		$criteria->compare('source',$this->source,true);
-		$criteria->compare('type',$this->type,true);
+		$criteria->compare('type',$type);
 		$criteria->compare('isThumbnail',$this->isThumbnail);
 
 		return new CActiveDataProvider($this, array(

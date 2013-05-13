@@ -19,6 +19,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<?php echo $form->textFieldRow($model, 'harga', array('class' => 'span5','style' => 'text-align:right')); ?>
 
 			<?php echo $form->textAreaRow($model, 'info', array('rows' => 6, 'cols' => 50, 'class' => 'span5')); ?>
+			
+			<?php echo $form->dropdownListRow($model,'status', array(Jaminan::STAT_JUAL=>ucfirst(Jaminan::STAT_JUAL),Jaminan::STAT_LELANG=>ucfirst(Jaminan::STAT_LELANG),Jaminan::STAT_LAKU=>ucfirst(Jaminan::STAT_LAKU))) ?>
 		</div>
 		<div class="span5">
 			<?php echo $form->textAreaRow($model, 'alamat', array('rows' => 6, 'cols' => 30, 'class' => 'span5')); ?>

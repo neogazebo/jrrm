@@ -1,32 +1,16 @@
-<div class="view">
+<?php
+	$image = CHtml::image(Yii::app()->getBaseUrl().'/slir/w255-h150-c255x150'.Yii::app()->getBaseUrl().'/img_jaminan/'.$data->getThumbnailImage(),'',array('class'=>'thumbnail'));
+	$status = $data->status;
+	$keterangan_status = ($status == 'laku') ? ucfirst($status) : 'Di'.$status ;
+?>
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('jenis_jaminan_id')); ?>:</b>
-	<?php echo CHtml::encode($data->jenis_jaminan_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('propinsi_id')); ?>:</b>
-	<?php echo CHtml::encode($data->propinsi_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('alamat')); ?>:</b>
-	<?php echo CHtml::encode($data->alamat); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('latitude')); ?>:</b>
-	<?php echo CHtml::encode($data->latitude); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('longitude')); ?>:</b>
-	<?php echo CHtml::encode($data->longitude); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('info')); ?>:</b>
-	<?php echo CHtml::encode($data->info); ?>
-	<br />
-
-
-</div>
+<li class="span3">
+	<div class="image_holder">
+	<?php echo CHtml::link($image,  Yii::app()->createUrl('jaminan/view', array('id'=>$data->id)),array('rel'=>'tooltip','data-title'=>"View Detail"))?>
+	</div>
+	<div>
+		<p><?php echo $keterangan_status.' '.$data->jenisJaminan->name?><br />Harga&nbsp;Rp <?php echo number_format($data->harga,0,'','.') ?> <br />
+			<?php echo $data->kota.', '.$data->propinsi->name ?>
+		</p>
+	</div>
+</li>

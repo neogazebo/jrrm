@@ -8,6 +8,7 @@ $this->menu=array(
 	array('label'=>'List Foto','url'=>array('index')),
 	array('label'=>'Create Foto','url'=>array('create')),
 );
+$that = $this;
 ?>
 
 <h1>Foto foto Jaminan #<?php echo $jaminan_id ?></h1>
@@ -27,7 +28,8 @@ $this->menu=array(
 			'name' => 'source',
 			'type' => 'raw',
 			'value' => function($data,$row) use($jaminan_id){
-				return CHtml::link('gbr',  Yii::app()->createUrl('foto/upload', array('jaminan_id'=>$jaminan_id,'id'=>$data->id)),array('rel'=>'tooltip','title'=>'Upload'));
+				$images = ($data->source) ? $data->source : 'default.jpg';
+				return CHtml::link(CHtml::image(Yii::app()->getBaseUrl() . "/img_jaminan/".$images,'',array('height'=>'80','width'=>'80')),  Yii::app()->createUrl('foto/upload', array('jaminan_id'=>$jaminan_id,'id'=>$data->id)),array('rel'=>'tooltip','title'=>'Upload'));
 			}
 		),
 		array(

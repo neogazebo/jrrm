@@ -7,7 +7,7 @@
         <td class="name">
             <span>{%=file.name%}</span>
         </td>
-        <td>//This is the new column, and below we add 2 new fields
+        <td>
             <?php echo CHtml::hiddenField('id', $_GET['id']) ?>
         </td>
         <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>

@@ -46,8 +46,16 @@ class JaminanController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model = $this->loadModel($id);
+		$foto_depan = $model->getAllFotoByType('D');
+		$foto_dalam = $model->getAllFotoByType('I');
+		$foto_lainnya = $model->getAllFotoByType('L');
+	
 		$this->render('view', array(
-			'model' => $this->loadModel($id),
+			'model' => $model,
+			'foto_depan'=>$foto_depan,
+			'foto_dalam'=>$foto_dalam,
+			'foto_lainnya'=>$foto_lainnya,
 		));
 	}
 
@@ -152,9 +160,13 @@ class JaminanController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$this->layout = '//layouts/column1';
 		$dataProvider = new CActiveDataProvider('Jaminan');
 		$this->render('index', array(
 			'dataProvider' => $dataProvider,
+			'pagination'=>array(
+        'pageSize'=>1,
+			),
 		));
 	}
 

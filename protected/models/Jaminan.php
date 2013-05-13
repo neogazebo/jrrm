@@ -107,6 +107,39 @@ class Jaminan extends CActiveRecord
 			'sJenisJaminan' => 'Jenis Jaminan'
 		);
 	}
+	
+	public function getThumbnailImage()
+	{
+		$thumbnail = '';
+		$images = $this->foto;
+		
+		foreach ($images as $img)
+		{
+			if($img->isThumbnail)
+				$thumbnail = $img->source;
+		}
+		
+		return ($thumbnail) ? $thumbnail : 'default_2.jpg';
+	}
+	
+	
+	public function getAllFotoByType($type)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->condition='type=:type';
+		$criteria->params=array(':type'=>$type);
+		$criteria->AddCondition('LENGTH(source) > 1');
+		
+		$images = Foto::model()->findAllByAttributes(array('jaminan_id'=>$this->id),$criteria);
+		
+		$data = array();
+		foreach($images as $img)
+		{
+			array_push($data,array('image'=>Yii::app()->getBaseUrl().'/slir/w600-h290-c600x290'.Yii::app()->getBaseUrl().'/img_jaminan/'.$img->source));
+		}
+		
+		return $data;
+	}
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

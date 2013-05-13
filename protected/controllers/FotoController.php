@@ -260,7 +260,7 @@ class FotoController extends Controller
 	
 	public function actionSetThumbnail($id,$jaminan_id)
 	{
-		$fotos = Foto::model()->findAll();
+		$fotos = Foto::model()->findAllByAttributes(array('jaminan_id'=>$jaminan_id));
 		foreach ($fotos as $foto)
 		{
 			$foto->isThumbnail = 0;

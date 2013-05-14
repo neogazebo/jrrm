@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Jaminan'=>array('index'),
+	'List Jaminan'=>array('index'),
 	'Manajemen',
 );
 

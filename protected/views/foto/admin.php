@@ -1,7 +1,9 @@
 <?php
 $this->breadcrumbs=array(
-	'Fotos'=>array('index'),
-	'Manage',
+	'List Jaminan'=>array('jaminan/index'),
+	'#'.$jaminan_id=>array('jaminan/view','id'=>$jaminan_id),
+	'Update'=>array('jaminan/update','id'=>$jaminan_id),
+	'Foto'
 );
 
 $this->menu=array(

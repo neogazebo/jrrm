@@ -1,13 +1,12 @@
 <?php
 $this->breadcrumbs=array(
-	'Fotos'=>array('index'),
-	'Create',
+	'List Jaminan'=>array('jaminan/index'),
+	'#'.$jaminan_id=>array('jaminan/view','id'=>$jaminan_id),
+	'Update'=>array('jaminan/update','id'=>$jaminan_id),
+	'Foto'=>array('index','jaminan_id'=>$jaminan_id),
+	'Upload'
 );
 
-$this->menu=array(
-	array('label'=>'List Foto','url'=>array('index')),
-	array('label'=>'Manage Foto','url'=>array('admin')),
-);
 ?>
 
 <?php 

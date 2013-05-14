@@ -71,6 +71,7 @@ class FotoController extends Controller
 	 */
 	public function actionUpload($jaminan_id, $id)
 	{
+		$this->layout = '//layouts/column1';
 		$model = $this->loadModel($id);
 
 		$photos = new XUploadForm;
@@ -104,7 +105,8 @@ class FotoController extends Controller
 
 		$this->render('upload', array(
 			'model' => $model,
-			'photos' => $photos
+			'photos' => $photos,
+			'jaminan_id'=>$jaminan_id
 		));
 	}
 

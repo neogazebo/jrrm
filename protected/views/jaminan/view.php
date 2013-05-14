@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
 	'List Jaminan'=>array('index'),
-	$model->id,
+	'#'.$model->id,
 );
 
 $this->menu=array(

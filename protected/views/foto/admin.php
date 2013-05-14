@@ -6,10 +6,6 @@ $this->breadcrumbs=array(
 	'Foto'
 );
 
-$this->menu=array(
-	array('label'=>'List Foto','url'=>array('index')),
-	array('label'=>'Create Foto','url'=>array('create')),
-);
 $that = $this;
 ?>
 
@@ -36,10 +32,17 @@ $that = $this;
 		),
 		array(
 			'name'=>'isThumbnail',
-			'htmlOptions' => array('style' => 'text-align:right'),
+			'htmlOptions' => array('style' => 'text-align:right;width:86%'),
 			'type'=>'raw',
 			'value'=>  function ($data,$row)use($jaminan_id){
 				return ($data->isThumbnail) ? CHtml::link('Thumbnail', Yii::app()->createUrl('foto/setThumbnail',array('id'=>$data->id,'jaminan_id' => $jaminan_id)), array('class'=>'btn btn-success btn-mini')) : CHtml::link('Set as thumb', Yii::app()->createUrl('foto/setThumbnail',array('id'=>$data->id,'jaminan_id' => $jaminan_id)), array('class'=>'btn btn-info btn-mini')) ;
+			}
+		),
+		array(
+			'htmlOptions' => array('style' => 'text-align:right'),
+			'type'=>'raw',
+			'value'=>function($data,$row)use($jaminan_id){
+				return CHtml::link('Remove', Yii::app()->createUrl('foto/delete',array('id'=>$data->id,'jaminan_id'=>$jaminan_id)),array('class'=>'btn btn-warning btn-mini'));
 			}
 		),
 	),

@@ -1,51 +1,35 @@
 <?php
 $this->breadcrumbs=array(
-	'Jenis Jaminans'=>array('index'),
+	'Jenis Jaminan'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List JenisJaminan','url'=>array('index')),
-	array('label'=>'Create JenisJaminan','url'=>array('create')),
+	array('label'=>'Jenis Jaminan Baru','url'=>array('create')),
 );
 
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('jenis-jaminan-grid', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
+$this->widget('bootstrap.widgets.TbAlert', array(
+	'alerts' => array(
+		'success' => array('block' => true, 'fade' => true),
+	),
+));
 ?>
 
-<h1>Manage Jenis Jaminans</h1>
-
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
-
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button btn')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
-	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
+<h1>Pengaturan Jenis Jaminan</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'jenis-jaminan-grid',
+	'type'=>'striped bordered condensed',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'name',
 		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'name'=>'name',
+			'header'=>'Jenis Jaminan',
+			'type'=>'raw',
+			'value'=>function($data,$row){
+				return CHtml::link($data->name, Yii::app()->createUrl('jenisJaminan/update', array('id'=>$data->id)), array('rel'=>'tooltip','title'=>'Update'));
+			}
 		),
 	),
 )); ?>

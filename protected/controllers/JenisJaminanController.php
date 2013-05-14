@@ -31,28 +31,13 @@ class JenisJaminanController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','admin','delete'),
 				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
-	}
-
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
 	}
 
 	/**
@@ -69,8 +54,10 @@ class JenisJaminanController extends Controller
 		if(isset($_POST['JenisJaminan']))
 		{
 			$model->attributes=$_POST['JenisJaminan'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()){
+				Yii::app()->user->setFlash('success', 'Jenis Jaminan Baru Telah di input');
+				$this->redirect(array('index'));
+			}
 		}
 
 		$this->render('create',array(
@@ -94,7 +81,10 @@ class JenisJaminanController extends Controller
 		{
 			$model->attributes=$_POST['JenisJaminan'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+				Yii::app()->user->setFlash('success', 'Jenis Jaminan Sudah di Update');
+				$this->redirect(array('index'));
+			}
 		}
 
 		$this->render('update',array(
@@ -123,20 +113,9 @@ class JenisJaminanController extends Controller
 	}
 
 	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('JenisJaminan');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
-
-	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin()
+	public function actionIndex()
 	{
 		$model=new JenisJaminan('search');
 		$model->unsetAttributes();  // clear any default values

@@ -26,7 +26,10 @@
 						array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
 						array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
 						array('label' => 'Manajemen User', 'url' => array('/user/index'), 'visible' => Yii::app()->user->checkAccess('root')),
-						array('label' => 'Manajemen Jaminan', 'url' => array('/jaminan/admin'), 'visible' => !Yii::app()->user->isGuest),
+						array('label' => 'Pengaturan', 'visible' => !Yii::app()->user->isGuest,'items'=>array(
+							array('label' =>'Jaminan','url' => array('/jaminan/admin')),
+							array('label' =>'Jenis Jaminan','url' => array('/jenisJaminan/'))
+						)),
 					),
 				),
 				array(

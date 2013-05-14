@@ -1,18 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Jenis Jaminans'=>array('index'),
-	$model->name=>array('view','id'=>$model->id),
+	'Jenis Jaminan'=>array('index'),
 	'Update',
 );
 
 $this->menu=array(
-	array('label'=>'List JenisJaminan','url'=>array('index')),
-	array('label'=>'Create JenisJaminan','url'=>array('create')),
-	array('label'=>'View JenisJaminan','url'=>array('view','id'=>$model->id)),
-	array('label'=>'Manage JenisJaminan','url'=>array('admin')),
+	array('label'=>'Jenis Jaminan Baru','url'=>array('create')),
+	array('label'=>'Manage Jenis Jaminan','url'=>array('index')),
 );
 ?>
 
-<h1>Update JenisJaminan <?php echo $model->id; ?></h1>
+<h1>Update Jenis Jaminan #<?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

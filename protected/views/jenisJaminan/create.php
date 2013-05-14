@@ -1,15 +1,14 @@
 <?php
 $this->breadcrumbs=array(
-	'Jenis Jaminans'=>array('index'),
+	'Jenis Jaminan'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List JenisJaminan','url'=>array('index')),
-	array('label'=>'Manage JenisJaminan','url'=>array('admin')),
+	array('label'=>'Manage Jenis Jaminan','url'=>array('index')),
 );
 ?>
 
-<h1>Create JenisJaminan</h1>
+<h1>Jenis Jaminan Baru</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

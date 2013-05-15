@@ -14,6 +14,7 @@ $this->menu=array(
 <h1>Jaminan #<?php echo $model->id; ?></h1>
 <div class="row">
 	<div class="span4">
+		<div id="map" style="height: 200px"></div>
 		<?php $this->widget('bootstrap.widgets.TbDetailView',array(
 			'data'=>$model,
 			'htmlOptions'=>array('class'=>'detail-jaminan'),
@@ -87,4 +88,38 @@ $this->menu=array(
 		<?php endif; ?>
 	</div>
 </div>
+<?php 
+Yii::app()->clientScript->registerCss('img_marker',<<<CSS
+  #maps img{
+		max-width : none;
+ }
+CSS
+);
+Yii::app()->clientScript->registerScriptFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyBoNyuwR7A61dy1QIZ4WB8to6BPIV9HC7Q&sensor=false');
+Yii::app()->clientScript->registerScript('map', "
+var map;
+var marker;
+var geocoder;
 
+function initialize() {
+	geocoder = new google.maps.Geocoder();
+	var jlat = $model->latitude;
+	var jlong = $model->longitude;
+	
+	var latLang = new google.maps.LatLng(jlat, jlong);
+  var mapOptions = {
+    zoom: 11,
+    center: latLang,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  map = new google.maps.Map(document.getElementById('map'),mapOptions);
+
+	marker = new google.maps.Marker({
+      position: latLang,
+      map:map,
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+");
+?>

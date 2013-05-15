@@ -23,7 +23,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<?php echo $form->dropdownListRow($model,'status', array(Jaminan::STAT_JUAL=>ucfirst(Jaminan::STAT_JUAL),Jaminan::STAT_LELANG=>ucfirst(Jaminan::STAT_LELANG),Jaminan::STAT_LAKU=>ucfirst(Jaminan::STAT_LAKU))) ?>
 		</div>
 		<div class="span5">
-			<?php echo $form->textAreaRow($model, 'alamat', array('rows' => 6, 'cols' => 30, 'class' => 'span5')); ?>
+			<?php echo $form->textAreaRow($model, 'alamat', array('rows' => 6, 'cols' => 30, 'class' => 'span5 geomap')); ?>
 
 			<?php echo $form->textFieldRow($model, 'kelurahan', array('class' => 'span5', 'maxlength' => 45)); ?>
 
@@ -47,14 +47,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			))
 			?>
 			
-			<?php echo $form->textField($model,'latitude').$form->textField($model,'longitude'); ?>
+			<?php echo $form->hiddenField($model,'latitude').$form->hiddenField($model,'longitude'); ?>
 		</div>
 	</div>
 </fieldset>
 
 <div class="row">
 	<div class="span10">
-		<div id="maps" class="" style="height: 400px;width: 100%"></div>	
+		<div id="maps" class="" style="height: 400px"></div>	
 	</div>
 </div>
 
@@ -113,7 +113,7 @@ Yii::app()->clientScript->registerCss('img_marker',<<<CSS
  }
 CSS
 );
-Yii::app()->clientScript->registerScriptFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyBoNyuwR7A61dy1QIZ4WB8to6BPIV9HC7Q&sensor=true');
+Yii::app()->clientScript->registerScriptFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyBoNyuwR7A61dy1QIZ4WB8to6BPIV9HC7Q&sensor=false');
 Yii::app()->clientScript->registerScript('map', "
 var map;
 var marker;
@@ -147,7 +147,7 @@ function initialize() {
 }
 
 
-$('#Jaminan_kota').blur(function(){
+$('#Jaminan_kota,#Jaminan_alamat').blur(function(){
 	var address = 'Indonesia'+$('#Jaminan_kota').val()+','+$('#Jaminan_alamat').val();
   geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {

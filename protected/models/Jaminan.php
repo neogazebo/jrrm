@@ -191,6 +191,9 @@ class Jaminan extends CActiveRecord
 	{
 		if($this->isNewRecord)
 		{
+			$this->latitude = ($this->latitude) ? $this->latitude : '-6.203403';
+			$this->longitude = ($this->longitude) ? $this->longitude : '106.823225';
+			
 			for($i = 1 ; $i <= 9 ; $i++)
 			{
 				$foto = new Foto;

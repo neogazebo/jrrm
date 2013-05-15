@@ -46,9 +46,18 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				),
 			))
 			?>
+			
+			<?php echo $form->textField($model,'latitude').$form->textField($model,'longitude'); ?>
 		</div>
 	</div>
 </fieldset>
+
+<div class="row">
+	<div class="span10">
+		<div id="maps" class="" style="height: 400px;width: 100%"></div>	
+	</div>
+</div>
+
 <fieldset>
 	<legend>Surat Kepemilikan</legend>
 	<div class="row">
@@ -98,6 +107,68 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php
 $url = Yii::app()->createUrl('jaminan/deleteSurat');
 $model_id = ($model->id) ? $model->id : 0;
+Yii::app()->clientScript->registerCss('img_marker',<<<CSS
+  #maps img{
+		max-width : none;
+ }
+CSS
+);
+Yii::app()->clientScript->registerScriptFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyBoNyuwR7A61dy1QIZ4WB8to6BPIV9HC7Q&sensor=true');
+Yii::app()->clientScript->registerScript('map', "
+var map;
+var marker;
+var geocoder;
+
+function initialize() {
+	geocoder = new google.maps.Geocoder();
+	var jlat = ($('#Jaminan_latitude').val()) ? $('#Jaminan_latitude').val() : -6.203403;
+	var jlong = ($('#Jaminan_longitude').val()) ? $('#Jaminan_longitude').val() : 106.823225;
+	
+	var latLang = new google.maps.LatLng(jlat, jlong);
+  var mapOptions = {
+    zoom: 11,
+    center: latLang,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  map = new google.maps.Map(document.getElementById('maps'),mapOptions);
+
+	marker = new google.maps.Marker({
+      position: latLang,
+      map:map,
+			draggable:true,
+  });
+	
+	google.maps.event.addListener(marker, 'dragend', function() {
+		var pos = marker.getPosition();
+		$('#Jaminan_latitude').val(pos.lat());
+		$('#Jaminan_longitude').val(pos.lng());
+		map.setCenter(marker.getPosition());
+	});
+}
+
+
+$('#Jaminan_kota').blur(function(){
+	var address = 'Indonesia'+$('#Jaminan_kota').val()+','+$('#Jaminan_alamat').val();
+  geocoder.geocode( { 'address': address}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      map.setCenter(results[0].geometry.location);
+      marker.setPosition(results[0].geometry.location);
+			var geoloc = results[0].geometry.location;
+			geoloc = geoloc.toString().replace('(','');
+			geoloc = geoloc.toString().replace(')','');
+			geoloc = geoloc.toString().split(',');
+			var lat = $.trim(geoloc[0]);
+			var long = $.trim(geoloc[1]);
+			$('#Jaminan_latitude').val(lat);
+			$('#Jaminan_longitude').val(long);
+			} else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+});
+
+google.maps.event.addDomListener(window, 'load', initialize);
+");
 Yii::app()->clientScript->registerScript('delete_field_surat', "
 $('body').delegate('.del_field_surat','click',function(){
 	var that = $(this);

@@ -7,7 +7,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Lihat Jaminan','url'=>array('view','id'=>$model->id)),
-	array('label'=>'Input Jaminan','url'=>array('create')),
+	array('label'=>'Jaminan Baru','url'=>array('create')),
+	array('label'=>'Manage Jaminan','url'=>array('admin')),
 	array('label'=>'Photo','url'=>array('foto/index','jaminan_id'=>$model->id))
 );
 

@@ -161,9 +161,7 @@ $('#Jaminan_kota,#Jaminan_alamat').blur(function(){
 			var long = $.trim(geoloc[1]);
 			$('#Jaminan_latitude').val(lat);
 			$('#Jaminan_longitude').val(long);
-			} else {
-      alert('Geocode was not successful for the following reason: ' + status);
-    }
+		}  
   });
 });
 

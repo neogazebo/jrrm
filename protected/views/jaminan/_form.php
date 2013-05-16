@@ -113,7 +113,7 @@ Yii::app()->clientScript->registerCss('img_marker',<<<CSS
  }
 CSS
 );
-Yii::app()->clientScript->registerScriptFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyBoNyuwR7A61dy1QIZ4WB8to6BPIV9HC7Q&sensor=false');
+Yii::app()->clientScript->registerScriptFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyBoNyuwR7A61dy1QIZ4WB8to6BPIV9HC7Q&sensor=false&language=id');
 Yii::app()->clientScript->registerScript('map', "
 var map;
 var marker;

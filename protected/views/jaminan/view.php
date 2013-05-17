@@ -55,7 +55,7 @@ $this->widget('bootstrap.widgets.TbTabs', array(
 
 									var latLang = new google.maps.LatLng(jlat, jlong);
 									var mapOptions = {
-										zoom: 11,
+										zoom: 15,
 										center: latLang,
 										mapTypeId: google.maps.MapTypeId.ROADMAP
 									};

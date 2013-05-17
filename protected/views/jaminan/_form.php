@@ -16,21 +16,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 			<?php echo $form->dropdownListRow($model, 'jenis_jaminan_id', CHtml::listData(JenisJaminan::model()->findAll(), 'id', 'name'), array('class' => 'span5', 'prompt' => 'Pilih Jenis Jaminan')); ?>
 
-			<?php echo $form->textFieldRow($model, 'harga', array('class' => 'span5','style' => 'text-align:right')); ?>
-
+			<?php echo $form->textFieldRow($model, 'judul', array('class' => 'span5')); ?>
+			
 			<?php echo $form->textAreaRow($model, 'info', array('rows' => 6, 'cols' => 50, 'class' => 'span5')); ?>
 			
-			<?php echo $form->dropdownListRow($model,'status', array(Jaminan::STAT_JUAL=>ucfirst(Jaminan::STAT_JUAL),Jaminan::STAT_LELANG=>ucfirst(Jaminan::STAT_LELANG),Jaminan::STAT_LAKU=>ucfirst(Jaminan::STAT_LAKU))) ?>
+			<?php echo $form->textFieldRow($model, 'harga', array('class' => 'span5','style' => 'text-align:right')); ?>
+			
+			<?php echo $form->radioButtonListInlineRow($model,'status', array(Jaminan::STAT_JUAL=>ucfirst(Jaminan::STAT_JUAL),Jaminan::STAT_LELANG=>ucfirst(Jaminan::STAT_LELANG),Jaminan::STAT_LAKU=>ucfirst(Jaminan::STAT_LAKU))) ?>
 		</div>
 		<div class="span5">
-			<?php echo $form->textAreaRow($model, 'alamat', array('rows' => 6, 'cols' => 30, 'class' => 'span5 geomap')); ?>
-
-			<?php echo $form->textFieldRow($model, 'kelurahan', array('class' => 'span5', 'maxlength' => 45)); ?>
-
-			<?php echo $form->textFieldRow($model, 'kecamatan', array('class' => 'span5', 'maxlength' => 45)); ?>
-
-			<?php echo $form->textFieldRow($model, 'kota', array('class' => 'span5', 'maxlength' => 45)); ?>
-
 			<?php echo $form->labelEx($model, 'propinsi_id') ?>
 			<?php
 			$this->widget('ext.select2.ESelect2', array(
@@ -46,17 +40,27 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				),
 			))
 			?>
+
+			<?php echo $form->textFieldRow($model, 'kota', array('class' => 'span5', 'maxlength' => 45)); ?>
+			
+			<?php echo $form->textAreaRow($model, 'alamat', array('rows' => 2, 'cols' => 10, 'class' => 'span5 geomap')); ?>
 			
 			<?php echo $form->hiddenField($model,'latitude').$form->hiddenField($model,'longitude'); ?>
+			
+			<?php 
+			$this->widget('bootstrap.widgets.TbButton', array(
+				'label'=>'Set in map',
+				'type'=>'primary',
+				'size'=>'mini',
+				'buttonType'=>'button',
+				'htmlOptions'=>array('id'=>'smap')
+			)); 
+			?>
+			
+			<div id="maps" class="" style="height: 400px"></div>
 		</div>
 	</div>
 </fieldset>
-
-<div class="row">
-	<div class="span10">
-		<div id="maps" class="" style="height: 400px"></div>	
-	</div>
-</div>
 
 <fieldset>
 	<legend>Surat Kepemilikan</legend>
@@ -105,6 +109,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php $this->endWidget(); ?>
 
 <?php
+$zoom = ($model->getScenario()=='insert') ? '11' : '15';
 $url = Yii::app()->createUrl('jaminan/deleteSurat');
 $model_id = ($model->id) ? $model->id : 0;
 Yii::app()->clientScript->registerCss('img_marker',<<<CSS
@@ -126,7 +131,7 @@ function initialize() {
 	
 	var latLang = new google.maps.LatLng(jlat, jlong);
   var mapOptions = {
-    zoom: 11,
+    zoom: $zoom,
     center: latLang,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -147,10 +152,16 @@ function initialize() {
 }
 
 
-$('#Jaminan_kota,#Jaminan_alamat').blur(function(){
-	var address = 'Indonesia'+$('#Jaminan_kota').val()+','+$('#Jaminan_alamat').val();
+$('#smap').click(function(){
+	var objPropinsi = $('#s2id_Jaminan_propinsi_id').select2('data');
+
+	var propinsi = (objPropinsi.text) ? ','+objPropinsi.text : 'Jakarta';
+	var kota = ($('#Jaminan_kota').val()) ? ','+$('#Jaminan_kota').val() : '' ;
+	var alamat = ($('#Jaminan_alamat').val()) ? ','+$('#Jaminan_alamat').val() : '';
+	var address = 'Indonesia'+propinsi+kota+alamat;
   geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
+			map.setZoom(15);
       map.setCenter(results[0].geometry.location);
       marker.setPosition(results[0].geometry.location);
 			var geoloc = results[0].geometry.location;

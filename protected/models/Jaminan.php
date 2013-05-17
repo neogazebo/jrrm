@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'jaminan':
  * @property integer $id
+ * @property string $judul
  * @property integer $jenis_jaminan_id
  * @property integer $propinsi_id
  * @property string $kecamatan
@@ -59,7 +60,7 @@ class Jaminan extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('jenis_jaminan_id, propinsi_id', 'required'),
+			array('judul, jenis_jaminan_id, propinsi_id, kota, alamat,status,harga', 'required'),
 			array('harga,jenis_jaminan_id, propinsi_id, isApproved', 'numerical', 'integerOnly' => true),
 			array('kecamatan, kelurahan, kota, latitude, longitude', 'length', 'max' => 45),
 			array('status', 'length', 'max' => 6),
@@ -92,6 +93,7 @@ class Jaminan extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'judul'=>'Judul',
 			'jenis_jaminan_id' => 'Jenis Jaminan',
 			'propinsi_id' => 'Propinsi',
 			'kecamatan' => 'Kecamatan',
@@ -156,13 +158,10 @@ class Jaminan extends CActiveRecord
 		$criteria->compare('id', $this->id);
 		$criteria->compare('jenis_jaminan_id', $this->jenis_jaminan_id);
 		$criteria->compare('propinsi_id', $this->propinsi_id);
-		$criteria->compare('kecamatan', $this->kecamatan, true);
-		$criteria->compare('kelurahan', $this->kelurahan, true);
 		$criteria->compare('kota', $this->kota, true);
 		$criteria->compare('alamat', $this->alamat, true);
 		$criteria->compare('latitude', $this->latitude, true);
 		$criteria->compare('longitude', $this->longitude, true);
-		$criteria->compare('info', $this->info, true);
 		$criteria->compare('isApproved', $this->isApproved);
 		$criteria->compare('status', $this->status, true);
 		$criteria->compare('jenisJaminan.name', $this->sJenisJaminan,true);

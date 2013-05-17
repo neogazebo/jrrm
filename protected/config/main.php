@@ -52,6 +52,7 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/common.php'), array(
 				  'urlManager'=>array(
 				  'urlFormat'=>'path',
 				  'rules'=>array(
+					'peta'=>'site/map',
 					'foto/jaminan/<jaminan_id:\d+>'=>'foto/index',
 					'foto/jaminan/<jaminan_id:\d+>/upload/<id:\d+>'=>'foto/upload',
 				  '<controller:\w+>/<id:\d+>'=>'<controller>/view',

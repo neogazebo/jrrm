@@ -23,10 +23,12 @@
 				array(
 					'class' => 'bootstrap.widgets.TbMenu',
 					'items' => array(
-						array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
-						array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
-						array('label' => 'Manajemen User', 'url' => array('/user/index'), 'visible' => Yii::app()->user->checkAccess('root')),
-						array('label' => 'Pengaturan', 'visible' => !Yii::app()->user->isGuest,'items'=>array(
+						array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => $user->isGuest),
+						array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => $user->isGuest),
+						array('label' => 'Peta', 'url' => array('/site/map'), 'visible' => !$user->isGuest),
+						array('label' => 'Jaminan', 'url' => array('/jaminan/'), 'visible' => !$user->isGuest),
+						array('label' => 'Manajemen User', 'url' => array('/user/index'), 'visible' => $user->checkAccess('root')),
+						array('label' => 'Pengaturan', 'visible' => !$user->checkAccess('viewer') && !$user->isGuest,'items'=>array(
 							array('label' =>'Jaminan','url' => array('/jaminan/admin')),
 							array('label' =>'Jenis Jaminan','url' => array('/jenisJaminan/'))
 						)),
@@ -36,9 +38,9 @@
 					'class' => 'bootstrap.widgets.TbMenu',
 					'htmlOptions' => array('class' => 'pull-right'),
 					'items' => array(
-						array('label' => ucfirst(Yii::app()->user->name), 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest,'items'=>array(
-							array('label' => 'Profile', 'url' => array('/profile/'), 'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest)
+						array('label' => ucfirst($user->name), 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest,'items'=>array(
+							array('label' => 'Profile', 'url' => array('/profile/'), 'visible' => !$user->isGuest),
+							array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !$user->isGuest)
 						))
 					),
 				),

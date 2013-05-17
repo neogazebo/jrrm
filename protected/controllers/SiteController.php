@@ -31,7 +31,10 @@ class SiteController extends Controller
 		// using the default layout 'protected/views/layouts/main.php'
 		if(!Yii::app()->user->isGuest)
 		{
-			$this->render('index');
+			if(!Yii::app()->user->checkAccess('viewer'))
+				$this->render('index');
+			else
+				$this->redirect (array('jaminan/index'));
 		}
 		else
 			$this->actionLogin ();
@@ -110,5 +113,11 @@ class SiteController extends Controller
 	{
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
+	}
+	
+	public function actionMap()
+	{
+		
+		$this->render('map');
 	}
 }

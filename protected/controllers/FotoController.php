@@ -56,17 +56,6 @@ class FotoController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view', array(
-			'model' => $this->loadModel($id),
-		));
-	}
-
-	/**
 	 * Upload foto
 	 */
 	public function actionUpload($jaminan_id, $id)
